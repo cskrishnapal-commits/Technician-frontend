@@ -1,0 +1,19 @@
+.technician-dashboard{
+
+    display:flex;
+
+    min-height:100vh;
+
+    background:#f4f6fb;
+
+}
+
+.technician-content{
+
+    margin-left:260px;
+
+    width:100%;
+
+    padding:30px;
+
+}

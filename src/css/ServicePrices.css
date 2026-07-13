@@ -1,0 +1,118 @@
+.service-page{
+
+    padding:30px;
+
+}
+
+.service-page h1{
+
+    color:#1148b5;
+
+}
+
+.service-page p{
+
+    margin-top:10px;
+
+    color:#555;
+
+}
+
+.service-form{
+
+    display:flex;
+
+    gap:15px;
+
+    margin:30px 0;
+
+}
+
+.service-form select,
+.service-form input{
+
+    width:220px;
+
+    padding:12px;
+
+    border:1px solid #ccc;
+
+    border-radius:8px;
+
+    font-size:16px;
+
+}
+
+.service-form button{
+
+    padding:12px 30px;
+
+    border:none;
+
+    background:#1148b5;
+
+    color:white;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+}
+
+.table-box{
+
+    margin-top:30px;
+
+    background:white;
+
+    border-radius:10px;
+
+    box-shadow:0 5px 15px rgba(0,0,0,.1);
+
+    overflow:hidden;
+
+}
+
+table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+}
+
+th{
+
+    background:#1148b5;
+
+    color:white;
+
+    padding:15px;
+
+}
+
+td{
+
+    padding:15px;
+
+    text-align:center;
+
+    border-bottom:1px solid #ddd;
+
+}
+
+.delete-btn{
+
+    background:red;
+
+    color:white;
+
+    border:none;
+
+    padding:8px 15px;
+
+    border-radius:6px;
+
+    cursor:pointer;
+
+}
