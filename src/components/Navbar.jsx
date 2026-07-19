@@ -8,7 +8,7 @@ function Navbar({simple=false}) {
     <nav>
       <div className="logo">
         <FaScrewdriverWrench />
-        <h2>Technician</h2>
+        <h2>Tech Hub</h2>
       </div>
 
       <ul>

@@ -10,10 +10,10 @@ function About() {
 
       <div className="about-container">
 
-        <h1>About Technician Finder</h1>
+        <h1>ABOUT TECHNICIAN HUB</h1>
 
         <p>
-          Technician Finder is a web application developed to help customers
+          Technician Hub is a web application developed to help customers
           find trusted technicians in their nearby area for repairing home
           appliances like AC, Refrigerator, Washing Machine, TV and more.
         </p>

@@ -1,14 +1,10 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../css/login.css";
-import Navbar from "../components/Navbar";
-import "../css/navbar.css";
-import Footer from "../components/Footer"
+
 
 
 function TechnicianRegister() {
-
-  const navigate = useNavigate();
 
   const [technician, setTechnician] = useState({
   name: "",
@@ -66,7 +62,7 @@ function TechnicianRegister() {
 
   return (
     <>
-    <Navbar simple={true}/>
+    
    < div className="login-container">
     <div className="register-page">
 
@@ -194,7 +190,7 @@ function TechnicianRegister() {
 
     </div>
     </div>
-    <Footer />
+  
     </>
   );
 }

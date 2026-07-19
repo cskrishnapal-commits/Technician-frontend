@@ -11,7 +11,7 @@ function Hero() {
 
             <div className="hero-left">
 
-                <h1>Technician</h1>
+                <h1>Technician Hub </h1>
 
                 <h3>
 

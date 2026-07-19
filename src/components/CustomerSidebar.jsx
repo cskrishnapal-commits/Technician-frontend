@@ -76,15 +76,15 @@ My Profile
 
 </li>
 
-<li>
+<li onClick={() => navigate("/")}>
 
-<Link to="/">
+
 
 <FaSignOutAlt />
 
 Logout
 
-</Link>
+
 
 </li>
 
