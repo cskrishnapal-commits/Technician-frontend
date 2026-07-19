@@ -1,24 +1,26 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
+import axios from "axios";
+
 import "../css/login.css";
 import Navbar from "../components/Navbar";
 import "../css/navbar.css";
-import Footer from "../components/Footer"
+import Footer from "../components/Footer";
 
 function TechnicianLogin() {
 
-    const navigate = useNavigate();handleLogin
+    const navigate = useNavigate();
 
-    const[email,setEmail]=useState("");
+    const [email, setEmail] = useState("");
 
-    const[password,setPassword]=useState("");
+    const [password, setPassword] = useState("");
 
-    function handleLogin(e){
+    async function handleLogin(e) {
 
         e.preventDefault();
 
-        if(email==="" || password===""){
+        if (email === "" || password === "") {
 
             alert("Please fill all fields");
 
@@ -26,72 +28,97 @@ function TechnicianLogin() {
 
         }
 
-        alert("Login Successful");
+        try {
 
-        navigate("/technician-dashboard");
+            const response = await axios.post(
+                "http://localhost:5000/api/technicians/login",
+                {
+                    email,
+                    password
+                }
+            );
+
+            localStorage.setItem(
+                "technicianToken",
+                response.data.token
+            );
+
+            localStorage.setItem(
+                "technician",
+                JSON.stringify(
+                    response.data.technician
+                )
+            );
+
+            alert(response.data.message);
+
+            navigate("/technician-dashboard");
+
+        } catch (error) {
+
+            alert(
+                error.response?.data?.message ||
+                "Login Failed"
+            );
+
+        }
 
     }
 
-    return(
+    return (
         <>
-        <Navbar simple={true}/>
+            <Navbar simple={true} />
 
-        <div className="login-container">
+            <div className="login-container">
 
-            <form className="login-box" onSubmit={handleLogin}>
+                <form
+                    className="login-box"
+                    onSubmit={handleLogin}
+                >
 
-                <h1>Technician  Login</h1>
+                    <h1>Technician Login</h1>
 
-                <p>Welcome Back</p>
+                    <p>Welcome Back</p>
 
-                <input
+                    <input
+                        type="email"
+                        placeholder="Enter Email"
+                        value={email}
+                        onChange={(e) =>
+                            setEmail(e.target.value)
+                        }
+                    />
 
-                type="email"
+                    <input
+                        type="password"
+                        placeholder="Enter Password"
+                        value={password}
+                        onChange={(e) =>
+                            setPassword(e.target.value)
+                        }
+                    />
 
-                placeholder="Enter Email"
+                    <button type="submit">
+                        Login
+                    </button>
 
-                value={email}
+                    <p className="register">
 
-                onChange={(e)=>setEmail(e.target.value)}
+                        Don't have an account?
 
-                />
+                        <Link to="/technician-register">
+                            Register
+                        </Link>
 
-                <input
+                    </p>
 
-                type="password"
+                </form>
 
-                placeholder="Enter Password"
+            </div>
 
-                value={password}
+            <Footer />
 
-                onChange={(e)=>setPassword(e.target.value)}
-
-                />
-
-                <button>
-
-                    Login
-
-                </button>
-
-                <p className="register">
-
-                    Don't have an account?
-
-                    <Link to="/technician-register">
-
-                        Register
-
-                    </Link>
-
-                </p>
-
-            </form>
-
-        </div>
-        <Footer/>
         </>
-
     );
 
 }

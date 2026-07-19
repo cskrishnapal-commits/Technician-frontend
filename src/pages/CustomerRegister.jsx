@@ -1,9 +1,12 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import axios from "axios";
+
 import "../css/login.css";
-import Navbar from "../components/Navbar";
 import "../css/navbar.css";
-import Footer from "../components/Footer"
+
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 function CustomerRegister() {
 
@@ -26,7 +29,7 @@ function CustomerRegister() {
 
     }
 
-    function handleSubmit(event) {
+    async function handleSubmit(event) {
 
         event.preventDefault();
 
@@ -37,88 +40,115 @@ function CustomerRegister() {
 
         }
 
-        alert("Registration Successful");
+        try {
 
-        navigate("/customer-login");
+            const response = await axios.post(
+                "http://localhost:5000/api/customers/register",
+                {
+                    name: customer.name,
+                    email: customer.email,
+                    phone: customer.phone,
+                    password: customer.password
+                }
+            );
+
+            alert(response.data.message);
+
+            navigate("/customer-login");
+
+        } catch (error) {
+
+            alert(
+                error.response?.data?.message ||
+                "Registration Failed"
+            );
+
+        }
 
     }
 
     return (
         <>
-        <Navbar simple={true} />
+            <Navbar simple={true} />
 
-        <div className="register-page">
+            <div className="register-page">
 
-            <div className="register-box">
+                <div className="register-box">
 
-                <h1>Create Account</h1>
+                    <h1>Create Account</h1>
 
-                <p>Register as Customer</p>
+                    <p>Register as Customer</p>
 
-                <form onSubmit={handleSubmit}>
+                    <form onSubmit={handleSubmit}>
 
-                    <input
-                        type="text"
-                        name="name"
-                        placeholder="Full Name"
-                        onChange={handleChange}
-                        required
-                    />
+                        <input
+                            type="text"
+                            name="name"
+                            placeholder="Full Name"
+                            value={customer.name}
+                            onChange={handleChange}
+                            required
+                        />
 
-                    <input
-                        type="email"
-                        name="email"
-                        placeholder="Email"
-                        onChange={handleChange}
-                        required
-                    />
+                        <input
+                            type="email"
+                            name="email"
+                            placeholder="Email"
+                            value={customer.email}
+                            onChange={handleChange}
+                            required
+                        />
 
-                    <input
-                        type="text"
-                        name="phone"
-                        placeholder="Phone Number"
-                        onChange={handleChange}
-                        required
-                    />
+                        <input
+                            type="text"
+                            name="phone"
+                            placeholder="Phone Number"
+                            value={customer.phone}
+                            onChange={handleChange}
+                            required
+                        />
 
-                    <input
-                        type="password"
-                        name="password"
-                        placeholder="Password"
-                        onChange={handleChange}
-                        required
-                    />
+                        <input
+                            type="password"
+                            name="password"
+                            placeholder="Password"
+                            value={customer.password}
+                            onChange={handleChange}
+                            required
+                        />
 
-                    <input
-                        type="password"
-                        name="confirmPassword"
-                        placeholder="Confirm Password"
-                        onChange={handleChange}
-                        required
-                    />
+                        <input
+                            type="password"
+                            name="confirmPassword"
+                            placeholder="Confirm Password"
+                            value={customer.confirmPassword}
+                            onChange={handleChange}
+                            required
+                        />
 
-                    <button>
-                        Register
-                    </button>
+                        <button type="submit">
+                            Register
+                        </button>
 
-                </form>
+                    </form>
 
-                <p>
+                    <p>
 
-                    Already have an account?
+                        Already have an account?
 
-                    <Link to="/customer-login">
-                        Login
-                    </Link>
+                        <Link to="/customer-login">
+                            Login
+                        </Link>
 
-                </p>
+                    </p>
+
+                </div>
 
             </div>
 
-        </div>
-        <Footer/>
-        </>
+            <Footer />
 
+        </>
     );
 
 }

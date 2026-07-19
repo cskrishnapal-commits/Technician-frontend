@@ -1,198 +1,233 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+
 import "../css/login.css";
-
-
 
 function TechnicianRegister() {
 
-  const [technician, setTechnician] = useState({
-  name: "",
-  email: "",
-  phone: "",
-  city: "",
-  services: [],
-  password: "",
-  confirmPassword: ""
-});
-  const handleChange = (e) => {
-    setTechnician({
-      ...technician,
-      [e.target.name]: e.target.value
+    const navigate = useNavigate();
+
+    const [technician, setTechnician] = useState({
+        name: "",
+        email: "",
+        phone: "",
+        city: "",
+        services: [],
+        password: "",
+        confirmPassword: ""
     });
-  };
- const handleRegister = (e) => {
 
-    e.preventDefault();
+    const handleChange = (e) => {
 
-    if (technician.password !== technician.confirmPassword) {
-      alert("Password does not match");
-      return;
+        setTechnician({
+            ...technician,
+            [e.target.name]: e.target.value
+        });
+
+    };
+
+    const handleCheckbox = (e) => {
+
+        const { value, checked } = e.target;
+
+        if (checked) {
+
+            setTechnician({
+                ...technician,
+                services: [...technician.services, value]
+            });
+
+        } else {
+
+            setTechnician({
+                ...technician,
+                services: technician.services.filter(
+                    (item) => item !== value
+                )
+            });
+
+        }
+
+    };
+
+    async function handleRegister(e) {
+
+        e.preventDefault();
+
+        if (technician.password !== technician.confirmPassword) {
+
+            alert("Password does not match");
+
+            return;
+
+        }
+
+        try {
+
+            const response = await axios.post(
+                "http://localhost:5000/api/technicians/register",
+                {
+                    name: technician.name,
+                    email: technician.email,
+                    phone: technician.phone,
+                    city: technician.city,
+                    service: technician.services.join(", "),
+                    password: technician.password
+                }
+            );
+
+            alert(response.data.message);
+
+            navigate("/technician-login");
+
+        } catch (error) {
+
+            alert(
+                error.response?.data?.message ||
+                "Registration Failed"
+            );
+
+        }
+
     }
 
-    alert("Technician Registered Successfully");
+    return (
+        <div className="login-container">
 
-    navigate("/technician-login");
-  };
+            <div className="register-page">
 
+                <div className="register-box">
 
- const handleCheckbox = (e) => {
+                    <h1>Create Account</h1>
 
-  const { value, checked } = e.target;
+                    <p>Register as Technician</p>
 
-  if (checked) {
+                    <form onSubmit={handleRegister}>
 
-    setTechnician({
-      ...technician,
-      services: [...technician.services, value]
-    });
+                        <input
+                            type="text"
+                            name="name"
+                            placeholder="Full Name"
+                            onChange={handleChange}
+                            required
+                        />
 
-  } else {
+                        <input
+                            type="email"
+                            name="email"
+                            placeholder="Email"
+                            onChange={handleChange}
+                            required
+                        />
 
-    setTechnician({
-      ...technician,
-      services: technician.services.filter(
-        (item) => item !== value
-      )
-    });
+                        <input
+                            type="text"
+                            name="phone"
+                            placeholder="Phone Number"
+                            onChange={handleChange}
+                            required
+                        />
 
-  }
+                        <input
+                            type="text"
+                            name="city"
+                            placeholder="City"
+                            onChange={handleChange}
+                            required
+                        />
 
-};
+                        <div className="checkbox-group">
 
-  return (
-    <>
-    
-   < div className="login-container">
-    <div className="register-page">
+                            <label>
+                                <b>Select Profession</b>
+                            </label>
 
-      <div className="register-box">
+                            <label>
+                                <input
+                                    type="checkbox"
+                                    value="AC Repair"
+                                    onChange={handleCheckbox}
+                                />
+                                AC Repair
+                            </label>
 
-        <h1>Create Account </h1>
-        <p> Regrister as Technician</p>
+                            <label>
+                                <input
+                                    type="checkbox"
+                                    value="Refrigerator Repair"
+                                    onChange={handleCheckbox}
+                                />
+                                Refrigerator Repair
+                            </label>
 
-        <form  onSubmit={handleRegister}>
+                            <label>
+                                <input
+                                    type="checkbox"
+                                    value="Washing Machine Repair"
+                                    onChange={handleCheckbox}
+                                />
+                                Washing Machine Repair
+                            </label>
 
-          <input
-            type="text"
-            name="name"
-            placeholder="Full Name"
-            onChange={handleChange}
-            required
-          />
+                            <label>
+                                <input
+                                    type="checkbox"
+                                    value="TV Repair"
+                                    onChange={handleCheckbox}
+                                />
+                                TV Repair
+                            </label>
 
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            onChange={handleChange}
-            required
-          />
+                            <label>
+                                <input
+                                    type="checkbox"
+                                    value="Electrician"
+                                    onChange={handleCheckbox}
+                                />
+                                Electrician
+                            </label>
 
-          <input
-            type="text"
-            name="phone"
-            placeholder="Phone Number"
-            onChange={handleChange}
-            required
-          />
+                        </div>
 
-          <input
-            type="text"
-            name="city"
-            placeholder="City"
-            onChange={handleChange}
-            required
-          />
-<div className="checkbox-group">
-    <label> SELECT PROFESSION </label>
-    
-  <label >
-    <input
-      type="checkbox"
-      value="AC Repair"
-      onChange={handleCheckbox}
-    />
-    AC Repair
-  </label>
+                        <input
+                            type="password"
+                            name="password"
+                            placeholder="Password"
+                            onChange={handleChange}
+                            required
+                        />
 
-  <label>
-    <input
-      type="checkbox"
-      value="Refrigerator Repair"
-      onChange={handleCheckbox}
-    />
-    Refrigerator Repair
-  </label>
+                        <input
+                            type="password"
+                            name="confirmPassword"
+                            placeholder="Confirm Password"
+                            onChange={handleChange}
+                            required
+                        />
 
-  <label>
-    <input
-      type="checkbox"
-      value="Washing Machine Repair"
-      onChange={handleCheckbox}
-    />
-    Washing Machine Repair
-  </label>
+                        <button type="submit">
+                            Register
+                        </button>
 
-  <label>
-    <input
-      type="checkbox"
-      value="TV Repair"
-      onChange={handleCheckbox}
-    />
-    TV Repair
-  </label>
+                    </form>
 
-  <label>
-    <input
-      type="checkbox"
-      value="Electrician"
-      onChange={handleCheckbox}
-    />
-    Electrician
-  </label>
+                    <p>
 
-</div>
+                        Already have an account?
 
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            onChange={handleChange}
-            required
-          />
+                        <Link to="/technician-login">
+                            Login
+                        </Link>
 
-          <input
-            type="password"
-            name="confirmPassword"
-            placeholder="Confirm Password"
-            onChange={handleChange}
-            required
-          />
+                    </p>
 
-          <button type="submit">
-            Register
-          </button>
+                </div>
 
-        </form>
+            </div>
 
-        <p>
-
-          Already have an account?
-
-          <Link to="/technician-login">
-            Login
-          </Link>
-
-        </p>
-
-      </div>
-
-    </div>
-    </div>
-  
-    </>
-  );
+        </div>
+    );
 }
 
 export default TechnicianRegister;

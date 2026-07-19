@@ -4,99 +4,110 @@ import { Link, useNavigate } from "react-router-dom";
 import "../css/login.css";
 import Navbar from "../components/Navbar";
 import "../css/navbar.css";
-import Footer from "../components/Footer"
-
+import Footer from "../components/Footer";
+import axios from "axios";
 
 function CustomerLogin() {
-  
+
     const navigate = useNavigate();
 
-    const[email,setEmail]=useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
 
-    const[password,setPassword]=useState("");
+   async function handleLogin(e){
 
-    function handleLogin(e){
+    e.preventDefault();
 
-        e.preventDefault();
+    if(email==="" || password===""){
 
-        if(email==="" || password===""){
+        alert("Please fill all fields");
 
-            alert("Please fill all fields");
-
-            return;
-
-        }
-
-        alert("Login Successful");
-
-        navigate("/customer-dashboard");
-       
+        return;
 
     }
 
-    return(
-       <>
+    try{
 
-       <Navbar simple={true}/>
-        <div className="login-container">
+        const response = await axios.post(
+            "http://localhost:5000/api/customers/login",
+            {
+                email,
+                password
+            }
+        );
 
-            <form className="login-box" onSubmit={handleLogin}>
-               
-                <h1>Customer Login</h1>
+        localStorage.setItem(
+            "customerToken",
+            response.data.token
+        );
 
-                <p>Welcome Back</p>
+        localStorage.setItem(
+            "customer",
+            JSON.stringify(response.data.customer)
+        );
 
-                <input
+        alert(response.data.message);
 
-                type="email"
+        navigate("/customer-dashboard");
 
-                placeholder="Enter Email"
+    }
 
-                value={email}
+    catch(error){
 
-                onChange={(e)=>setEmail(e.target.value)}
+        alert(
+            error.response?.data?.message ||
+            "Login Failed"
+        );
 
-                />
+    }
 
-                <input
+}
+    return (
+        <>
+            <Navbar simple={true} />
 
-                type="password"
+            <div className="login-container">
 
-                placeholder="Enter Password"
+                <form className="login-box" onSubmit={handleLogin}>
 
-                value={password}
+                    <h1>Customer Login</h1>
 
-                onChange={(e)=>setPassword(e.target.value)}
+                    <p>Welcome Back</p>
 
-                />
+                    <input
+                        type="email"
+                        placeholder="Enter Email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
 
-                <button>
+                    <input
+                        type="password"
+                        placeholder="Enter Password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
 
-                    Login
+                    <button>
+                        Login
+                    </button>
 
-                </button>
+                    <p className="register">
 
-                <p className="register">
+                        Don't have an account?
 
-                    Don't have an account?
+                        <Link to="/customer-register">
+                            Register
+                        </Link>
 
-                    <Link to="/customer-register">
+                    </p>
 
-                        Register
+                </form>
 
-                    </Link>
+            </div>
 
-                
-
-                </p>
-
-            </form>
-
-        </div>
-        <Footer/>
+            <Footer />
         </>
-
-
     );
 
 }
