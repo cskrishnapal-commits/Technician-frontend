@@ -29,7 +29,7 @@ function CustomerLogin() {
     try{
 
         const response = await axios.post(
-            "http://localhost:5000/api/customers/login",
+            `${import.meta.env.VITE_API_URL}/api/customers/login`,
             {
                 email,
                 password
