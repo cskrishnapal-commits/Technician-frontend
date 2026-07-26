@@ -1,86 +1,149 @@
-.profile-page{
+.customer-profile{
 
-    padding:35px;
+    padding:30px;
+
+    background:#f5f7fb;
+
+    min-height:100vh;
+
 }
 
-.profile-page h1{
+.customer-profile h1{
 
-    color:#0f4fb8;
-    margin-bottom:30px;
+    color:#0d6efd;
+
+    margin-bottom:25px;
+
 }
 
-.profile-card{
+.profile-container{
 
     display:flex;
-    gap:40px;
-    background:white;
-    padding:30px;
-    border-radius:12px;
-    box-shadow:0 5px 15px rgba(0,0,0,.15);
-}
 
-.profile-card img{
+    justify-content:center;
 
-    width:170px;
-    height:170px;
-    border-radius:50%;
-    object-fit:cover;
 }
 
 .profile-form{
 
-    flex:1;
+    width:750px;
+
+    background:white;
+
+    padding:30px;
+
+    border-radius:12px;
+
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+
+}
+
+.profile-image{
+
     display:flex;
+
     flex-direction:column;
+
+    align-items:center;
+
+    margin-bottom:25px;
+
+}
+
+.profile-image img{
+
+    width:140px;
+
+    height:140px;
+
+    border-radius:50%;
+
+    object-fit:cover;
+
+    border:4px solid #0d6efd;
+
+    margin-bottom:15px;
+
+}
+
+.profile-image input{
+
+    width:220px;
+
 }
 
 .profile-form label{
 
+    display:block;
+
     margin-top:15px;
-    font-weight:bold;
+
+    margin-bottom:6px;
+
+    font-weight:600;
+
 }
 
 .profile-form input,
+
 .profile-form textarea{
 
-    padding:10px;
-    margin-top:5px;
-    border:1px solid #ccc;
-    border-radius:6px;
+    width:100%;
+
+    padding:12px;
+
+    border:1px solid #ddd;
+
+    border-radius:8px;
+
+    font-size:15px;
+
 }
 
 .profile-form textarea{
 
-    height:90px;
+    height:100px;
+
     resize:none;
+
 }
 
 .profile-form button{
 
-    margin-top:20px;
-    background:#1456d4;
-    color:white;
+    margin-top:25px;
+
+    width:100%;
+
+    padding:14px;
+
     border:none;
-    padding:12px;
+
+    background:#0d6efd;
+
+    color:white;
+
     border-radius:8px;
+
     cursor:pointer;
+
+    font-size:16px;
+
+    transition:.3s;
+
 }
 
-.profile-info{
+.profile-form button:hover{
 
-    width:260px;
-    background:#f4f7fc;
-    padding:20px;
-    border-radius:10px;
+    background:#0b5ed7;
+
 }
 
-.profile-info h3{
+@media(max-width:768px){
 
-    margin-bottom:20px;
-    color:#1456d4;
-}
+    .profile-form{
 
-.profile-info p{
+        width:100%;
 
-    margin:15px 0;
+    }
+
 }
