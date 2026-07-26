@@ -66,13 +66,13 @@ function TechnicianRegister() {
         try {
 
             const response = await axios.post(
-                 `${import.meta.env.VITE_API_URL}/api/technician/register`,
+                 `${import.meta.env.VITE_API_URL}/api/technicians/register`,
                 {
                     name: technician.name,
                     email: technician.email,
                     phone: technician.phone,
                     city: technician.city,
-                    service: technician.services.join(", "),
+                    
                     password: technician.password
                 }
             );
@@ -113,13 +113,6 @@ function TechnicianRegister() {
                             required
                         />
 
-                        <input
-                            type="email"
-                            name="email"
-                            placeholder="Email"
-                            onChange={handleChange}
-                            required
-                        />
 
                         <input
                             type="text"
@@ -128,68 +121,15 @@ function TechnicianRegister() {
                             onChange={handleChange}
                             required
                         />
-
+                            
                         <input
-                            type="text"
-                            name="city"
-                            placeholder="City"
+                            type="email"
+                            name="email"
+                            placeholder="Email"
                             onChange={handleChange}
                             required
                         />
-
-                        <div className="checkbox-group">
-
-                            <label>
-                                <b>Select Profession</b>
-                            </label>
-
-                            <label>
-                                <input
-                                    type="checkbox"
-                                    value="AC Repair"
-                                    onChange={handleCheckbox}
-                                />
-                                AC Repair
-                            </label>
-
-                            <label>
-                                <input
-                                    type="checkbox"
-                                    value="Refrigerator Repair"
-                                    onChange={handleCheckbox}
-                                />
-                                Refrigerator Repair
-                            </label>
-
-                            <label>
-                                <input
-                                    type="checkbox"
-                                    value="Washing Machine Repair"
-                                    onChange={handleCheckbox}
-                                />
-                                Washing Machine Repair
-                            </label>
-
-                            <label>
-                                <input
-                                    type="checkbox"
-                                    value="TV Repair"
-                                    onChange={handleCheckbox}
-                                />
-                                TV Repair
-                            </label>
-
-                            <label>
-                                <input
-                                    type="checkbox"
-                                    value="Electrician"
-                                    onChange={handleCheckbox}
-                                />
-                                Electrician
-                            </label>
-
-                        </div>
-
+                        
                         <input
                             type="password"
                             name="password"
@@ -205,6 +145,14 @@ function TechnicianRegister() {
                             onChange={handleChange}
                             required
                         />
+                        <input
+                            type="text"
+                            name="city"
+                            placeholder="City"
+                            onChange={handleChange}
+                            required
+                        />
+
 
                         <button type="submit">
                             Register

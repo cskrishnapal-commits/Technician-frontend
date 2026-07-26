@@ -1,11 +1,12 @@
-import Navbar from "../components/Navbar"
-import Footer from "../components/Footer"
+// import Navbar from "../components/Navbar"
+// import Footer from "../components/Footer"
 import "../css/about.css";
 
 function About() {
   return (
-    <>
-    < Navbar/>
+   
+    
+    
     <div className="about">
 
       <div className="about-container">
@@ -66,8 +67,9 @@ function About() {
       </div>
 
     </div>
-    <Footer/>
-    </>
+    
+   
+    
   );
 }
 

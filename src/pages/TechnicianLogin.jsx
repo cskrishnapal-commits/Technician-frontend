@@ -31,7 +31,7 @@ function TechnicianLogin() {
         try {
 
             const response = await axios.post(
-                 `${import.meta.env.VITE_API_URL}/api/technician/login`,
+                 `${import.meta.env.VITE_API_URL}/api/technicians/login`,
                 {
                     email,
                     password

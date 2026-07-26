@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import "../css/ServicePrices.css";
+
 
 function ServicePrices() {
 
@@ -10,8 +12,10 @@ function ServicePrices() {
     const [price, setPrice] = useState("");
 
     const [services, setServices] = useState([]);
+    const [editId, setEditId] = useState(null);
 
-    const savePrice = () => {
+
+    const savePrice = async () => {
 
         if (
             appliance === "" ||
@@ -22,33 +26,149 @@ function ServicePrices() {
             alert("Please fill all fields");
 
             return;
+
         }
 
-        const newService = {
+        try {
 
-            appliance,
-            problem,
-            price
+            const technician = JSON.parse(
+                localStorage.getItem("technician")
+            );
 
-        };
+            if (editId) {
 
-        setServices([...services, newService]);
+                await axios.put(
 
-        setAppliance("");
+                    `${import.meta.env.VITE_API_URL}/api/service-prices/${editId}`,
 
-        setProblem("");
+                    {
 
-        setPrice("");
+                        appliance,
+
+                        problem,
+
+                        price
+
+                    }
+
+                );
+
+                alert("Service Updated Successfully");
+
+                setEditId(null);
+
+            }
+
+            else {
+
+                await axios.post(
+
+                    `${import.meta.env.VITE_API_URL}/api/service-prices`,
+
+                    {
+
+                        technicianId: technician._id,
+
+                        appliance,
+
+                        problem,
+
+                        price
+
+                    }
+
+                );
+
+                alert("Service Added Successfully");
+
+            }
+
+            fetchServices();
+
+            setAppliance("");
+
+            setProblem("");
+
+            setPrice("");
+
+        }
+
+        catch (error) {
+
+            alert(
+
+                error.response?.data?.message ||
+
+                " Failed To Add service price"
+
+            );
+
+        }
 
     };
 
-    const deleteService = (index) => {
 
-        const updated = services.filter((item, i) => i !== index);
+    const deleteService = async (id) => {
 
-        setServices(updated);
+        try {
+
+            await axios.delete(
+                `${import.meta.env.VITE_API_URL}/api/service-prices/${id}`
+            );
+
+            alert("Service Deleted Successfully");
+
+            fetchServices();
+
+        }
+
+        catch (error) {
+
+            alert(
+                error.response?.data?.message ||
+                "Delete Failed"
+            );
+
+        }
 
     };
+    const editService = (service) => {
+
+        setAppliance(service.appliance);
+
+        setProblem(service.problem);
+
+        setPrice(service.price);
+
+        setEditId(service._id);
+
+    };
+    const fetchServices = async () => {
+
+        try {
+
+            const technician = JSON.parse(
+                localStorage.getItem("technician")
+            );
+
+            const response = await axios.get(
+                `${import.meta.env.VITE_API_URL}/api/service-prices/${technician._id}`
+            );
+
+            setServices(response.data);
+
+        } catch (error) {
+
+            console.log(error);
+
+        }
+
+    };
+    useEffect(() => {
+
+        fetchServices();
+
+    }, []);
 
     return (
 
@@ -102,10 +222,21 @@ function ServicePrices() {
                     value={price}
                     onChange={(e) => setPrice(e.target.value)}
                 />
-
                 <button onClick={savePrice}>
 
-                    Save Price
+                    {
+
+                        editId
+
+                            ?
+
+                            "Update Price"
+
+                            :
+
+                            "Save Price"
+
+                    }
 
                 </button>
 
@@ -125,7 +256,7 @@ function ServicePrices() {
 
                             <th>Price</th>
 
-                            <th>Action</th>
+                            <th>Actions</th>
 
                         </tr>
 
@@ -134,38 +265,63 @@ function ServicePrices() {
                     <tbody>
 
                         {
+                            services.length === 0 ?
 
-                            services.map((item, index) => (
+                                (
+                                    <tr>
+                                        <td colSpan="4">
+                                            No Service Added Yet
+                                        </td>
+                                    </tr>
+                                )
 
-                                <tr key={index}>
+                                :
 
-                                    <td>{item.appliance}</td>
+                                (
+                                    services.map((item, index) => (
 
-                                    <td>{item.problem}</td>
+                                        <tr key={item._id || index}>
 
-                                    <td>₹{item.price}</td>
+                                            <td>{item.appliance}</td>
 
-                                    <td>
+                                            <td>{item.problem}</td>
 
-                                        <button
-                                            className="delete-btn"
-                                            onClick={() => deleteService(index)}
-                                        >
+                                            <td>₹{item.price}</td>
 
-                                            Delete
+                                            <td>
 
-                                        </button>
+                                                <button
+                                                className="edit-btn"
 
-                                    </td>
+                                                    onClick={() => editService(item)}
 
-                                </tr>
+                                                >
 
-                            ))
+                                                    Edit
 
+                                                </button>
+
+                                                <button
+
+                                                    className="delete-btn"
+
+                                                    onClick={() => deleteService(item._id)}
+
+                                                >
+
+                                                    Delete
+
+                                                </button>
+
+                                            </td>
+
+                                        </tr>
+
+                                    ))
+                                )
                         }
 
                     </tbody>
-
                 </table>
 
             </div>

@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
-import { FaScrewdriverWrench } from "react-icons/fa6";
+import { FaScrewdriverWrench} from "react-icons/fa6";
+import{FaHome} from "react-icons/fa"
 
 import "../css/navbar.css";
 
-function Navbar({simple=false}) {
+function Navbar() {
   return (
     <nav>
       <div className="logo">
@@ -13,26 +14,13 @@ function Navbar({simple=false}) {
 
       <ul>
         <li>
+          <FaHome />
           <Link to="/">Home</Link>
         </li>
-
-        <li>
-          <Link to="/about">About</Link>
-        </li>
-      {!simple &&(
-        <>
-        <li>
-          <Link to="/customer-login">Customer Login</Link>
-        </li>
-
-        <li>
-          <Link to="/technician-login">Technician Login</Link>
-        </li>
-        </>
-      )}
-      </ul>
+</ul>
     </nav>
   );
-}
+};
+
 
 export default Navbar;

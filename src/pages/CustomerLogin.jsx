@@ -64,7 +64,7 @@ function CustomerLogin() {
 }
     return (
         <>
-            <Navbar simple={true} />
+            <Navbar />
 
             <div className="login-container">
 

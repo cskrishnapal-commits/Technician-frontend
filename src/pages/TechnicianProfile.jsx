@@ -1,25 +1,58 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import "../css/techicianprofile.css";
 
 function TechnicianProfile() {
 
     const [profile, setProfile] = useState({
 
-        name: "Rahul Sharma",
+        name: "",
 
-        email: "rahul@gmail.com",
+        email: "",
 
-        phone: "9876543210",
+        phone: "",
 
-        field: "AC Technician",
+        service: "",
 
-        experience: "5 Years",
+        experience: "",
 
-        city: "Kanpur",
+        city: "",
 
-        address: "Govind Nagar, Kanpur"
+        address: ""
 
     });
+
+    useEffect(() => {
+
+        fetchProfile();
+
+    }, []);
+
+    const fetchProfile = async () => {
+
+        try {
+
+            const technician = JSON.parse(
+                localStorage.getItem("technician")
+            );
+
+            const response = await axios.get(
+                `${import.meta.env.VITE_API_URL}/api/technicians/profile/${technician._id}`
+            );
+            setProfile(response.data);
+
+
+        }
+
+        catch (error) {
+
+            console.log(error);
+
+            alert("Failed to load profile");
+
+        }
+
+    };
 
     function handleChange(e) {
 
@@ -33,11 +66,64 @@ function TechnicianProfile() {
 
     }
 
-    function updateProfile() {
+    const updateProfile = async () => {
 
-        alert("Profile Updated Successfully");
+        try {
 
-    }
+            const technician = JSON.parse(
+                localStorage.getItem("technician")
+            );
+
+            const response = await axios.put(
+
+                `${import.meta.env.VITE_API_URL}/api/technicians/profile/${technician._id}`,
+
+                {
+
+                    name: profile.name,
+
+                    phone: profile.phone,
+
+                    city: profile.city,
+
+                    experience: profile.experience,
+
+                    service: profile.service,
+
+                    address: profile.address
+                    
+
+                }
+
+            );
+
+            localStorage.setItem(
+
+                "technician",
+
+                JSON.stringify(response.data.technician)
+
+            );
+
+            alert(response.data.message);
+
+            fetchProfile();
+
+        }
+
+        catch (error) {
+
+            alert(
+
+                error.response?.data?.message ||
+
+                "Profile Update Failed"
+
+            );
+
+        }
+
+    };
 
     return (
 
@@ -71,9 +157,8 @@ function TechnicianProfile() {
 
                     <input
                         type="email"
-                        name="email"
                         value={profile.email}
-                        onChange={handleChange}
+                        readOnly
                     />
 
                     <label>Phone Number</label>
@@ -88,18 +173,22 @@ function TechnicianProfile() {
                     <label>Work Field</label>
 
                     <select
-                        name="field"
-                        value={profile.field}
+                        name="service"
+                        value={profile.service}
                         onChange={handleChange}
                     >
 
-                        <option>AC Technician</option>
+                        <option value="">Select Service</option>
 
-                        <option>Refrigerator Technician</option>
+                        <option>AC Repair</option>
 
-                        <option>Cooler Technician</option>
+                        <option>Refrigerator Repair</option>
 
-                        <option>Washing Machine Technician</option>
+                        <option>Washing Machine Repair</option>
+
+                        <option>TV Repair</option>
+
+                        <option>Electrician</option>
 
                     </select>
 
@@ -125,7 +214,7 @@ function TechnicianProfile() {
 
                     <textarea
                         name="address"
-                        value={profile.address}
+                        value={profile.address || ""}
                         onChange={handleChange}
                     />
 
@@ -141,11 +230,35 @@ function TechnicianProfile() {
 
                     <h2>Account Information</h2>
 
-                    <p><strong>Technician ID :</strong> TEC1001</p>
+                    <p>
 
-                    <p><strong>Status :</strong> Verified</p>
+                        <strong>Technician ID :</strong>
 
-                    <p><strong>Joined :</strong> January 2026</p>
+                        {
+
+                            JSON.parse(
+                                localStorage.getItem("technician")
+                            )?._id
+
+                        }
+
+                    </p>
+
+                    <p>
+
+                        <strong>Status :</strong>
+
+                        Verified
+
+                    </p>
+
+                    <p>
+
+                        <strong>Joined :</strong>
+
+                        Technician Account
+
+                    </p>
 
                 </div>
 

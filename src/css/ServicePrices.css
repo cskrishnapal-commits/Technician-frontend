@@ -100,6 +100,23 @@ td{
     border-bottom:1px solid #ddd;
 
 }
+.edit-btn{
+
+    background:red;
+
+    color:white;
+
+    border:none;
+
+    padding:8px 15px;
+
+    border-radius:6px;
+
+    cursor:pointer;
+    margin-right: 10px;
+   
+
+}
 
 .delete-btn{
 
@@ -114,5 +131,7 @@ td{
     border-radius:6px;
 
     cursor:pointer;
+    margin-left: 10px;
+   
 
 }

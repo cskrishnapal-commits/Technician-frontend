@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "../css/FindTechnician.css";
-import map from "../images/map.png";
+
 
 import tech1 from "../images/technician1.jpg";
 import tech2 from "../images/technician2.jpg";
@@ -105,11 +105,8 @@ function FindTechnician() {
 
         </div>
 
-        {/* Map */}
 
-        <div className="tec-map">
-          <img src={map} alt="Map" />
-        </div>
+        
 
         {/* Technician List */}
 

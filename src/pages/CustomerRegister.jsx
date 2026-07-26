@@ -3,10 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 
 import "../css/login.css";
-import "../css/navbar.css";
 
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
 
 function CustomerRegister() {
 
@@ -68,8 +65,7 @@ function CustomerRegister() {
     }
 
     return (
-        <>
-            <Navbar simple={true} />
+       
 
             <div className="register-page">
 
@@ -146,9 +142,7 @@ function CustomerRegister() {
 
             </div>
 
-            <Footer />
-
-        </>
+         
     );
 
 }
