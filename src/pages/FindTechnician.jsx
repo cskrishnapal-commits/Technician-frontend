@@ -1,166 +1,378 @@
 import { useState } from "react";
+import axios from "axios";
 import "../css/FindTechnician.css";
-
-
-import tech1 from "../images/technician1.jpg";
-import tech2 from "../images/technician2.jpg";
-import tech3 from "../images/technician3.jpg";
-import tech4 from "../images/technician4.jpg";
 
 import CustomerSidebar from "../components/CustomerSidebar";
 
 import {
   FaMapMarkerAlt,
-  FaSearch,
-  FaStar
+  FaSearch
 } from "react-icons/fa";
 
 function FindTechnician() {
 
-  // State
+  const customer = JSON.parse(localStorage.getItem("customer"));
+
   const [showTechnicians, setShowTechnicians] = useState(false);
 
-  // Search Button Function
-  const handleSearch = () => {
-    setShowTechnicians(true);
+  const [technicians, setTechnicians] = useState([]);
+
+  const [appliance, setAppliance] = useState("AC");
+
+  const [problem, setProblem] = useState("Gas Leakage");
+
+  // Dynamic Problems
+
+  const problemOptions = {
+
+    AC: [
+      "Gas Leakage",
+      "No Cooling",
+      "Compressor Problem",
+      "Fan Motor Issue",
+      "Water Leakage"
+    ],
+
+    Refrigerator: [
+      "No Cooling",
+      "Compressor Problem",
+      "Gas Leakage",
+      "Ice Build-up",
+      "Door Seal Problem"
+    ],
+
+    "Washing Machine": [
+      "Motor Problem",
+      "Water Leakage",
+      "Drum Not Spinning",
+      "Drainage Issue",
+      "Power Failure"
+    ],
+
+    Cooler: [
+      "Pump Problem",
+      "Fan Motor Issue",
+      "Water Leakage",
+      "Cooling Pad Replacement",
+      "No Cooling"
+    ],
+
+    "TV Repair": [
+      "No Display",
+      "Screen Problem",
+      "Sound Issue",
+      "Remote Not Working",
+      "HDMI Port Issue"
+    ],
+
+    Electrician: [
+      "Power Failure",
+      "Switch Repair",
+      "Wiring Issue",
+      "Fan Installation",
+      "MCB Trip"
+    ]
+
   };
 
-  const technicians = [
-    {
-      name: "Rahul Kumar",
-      service: "AC Repair",
-      exp: "5 Years",
-      price: "₹1500 - ₹2500",
-      rating: "4.8",
-      image: tech1
-    },
-    {
-      name: "Amit Singh",
-      service: "Refrigerator",
-      exp: "7 Years",
-      price: "₹1800 - ₹3000",
-      rating: "4.7",
-      image: tech2
-    },
-    {
-      name: "Rohit Verma",
-      service: "Plumber",
-      exp: "6 Years",
-      price: "₹1200 - ₹2200",
-      rating: "4.6",
-      image: tech3
-    },
-    {
-      name: "Mohit Sharma",
-      service: "Electrician",
-      exp: "4 Years",
-      price: "₹1300 - ₹2500",
-      rating: "4.8",
-      image: tech4
+  const fetchTechnicians = async () => {
+
+    try {
+
+      const response = await axios.get(
+
+        `${import.meta.env.VITE_API_URL}/api/customers/technicians`,
+
+        {
+
+          params: {
+
+            appliance,
+
+            problem
+
+          }
+
+        }
+
+      );
+
+      setTechnicians(response.data);
+
+      setShowTechnicians(true);
+
     }
-  ];
+
+    catch (error) {
+
+      console.log(error);
+
+      alert("Failed to Load Technicians");
+
+    }
+
+  };
+
+  const handleSearch = () => {
+
+    fetchTechnicians();
+
+  };
 
   return (
+
     <>
+
       <CustomerSidebar />
 
       <div className="find-container">
 
-        {/* Top Section */}
+        {/* Top */}
 
         <div className="top-section">
 
           <div>
-            <h2>Welcome, Rahul Sharma 👋</h2>
-            <p>Find the best appliance repair technicians near you</p>
+
+            <h2>
+
+              Welcome, {customer?.name} 👋
+
+            </h2>
+
+            <p>
+
+              Find the best appliance repair technicians near you
+
+            </p>
+
           </div>
 
           <div className="location-box">
+
             <FaMapMarkerAlt />
-            Andheri East, Mumbai
+
+            Your Location
+
           </div>
 
         </div>
 
-        {/* Search Box */}
+        {/* Search */}
 
         <div className="search-box">
 
-          <select>
+          <select
+
+            value={appliance}
+
+            onChange={(e) => {
+
+              const selected = e.target.value;
+
+              setAppliance(selected);
+
+              setProblem(problemOptions[selected][0]);
+
+            }}
+
+          >
+
             <option>AC</option>
+
             <option>Refrigerator</option>
+
             <option>Cooler</option>
+
             <option>Washing Machine</option>
+
+            <option>TV Repair</option>
+
+            <option>Electrician</option>
+
           </select>
 
-          <select>
-            <option>Gas Leakage</option>
-            <option>No Cooling</option>
-            <option>Water Leakage</option>
+          <select
+
+            value={problem}
+
+            onChange={(e) =>
+
+              setProblem(e.target.value)
+
+            }
+
+          >
+
+            {
+
+              problemOptions[appliance].map((item) => (
+
+                <option
+
+                  key={item}
+
+                  value={item}
+
+                >
+
+                  {item}
+
+                </option>
+
+              ))
+
+            }
+
           </select>
 
           <button onClick={handleSearch}>
-            <FaSearch /> Search
+
+            <FaSearch />
+
+            Search
+
           </button>
 
         </div>
 
-
-        
-
         {/* Technician List */}
 
-        {showTechnicians && (
+        {
 
-          <>
-            <h3>Nearby Technicians</h3>
+          showTechnicians && (
 
-            <div className="technician-list">
+            <>
 
-              {technicians.map((item, index) => (
+              <h3>
 
-                <div className="tec-card" key={index}>
+                Nearby Technicians
 
-                  <div className="tec-left">
+              </h3>
 
-                    <img src={item.image} alt={item.name} />
+              <div className="technician-list">
 
-                    <div>
+                {
 
-                      <h4>{item.name}</h4>
+                  technicians.length > 0 ? (
 
-                      <p>{item.service}</p>
+                    technicians.map((item) => (
 
-                      <p>
-                        <FaStar color="orange" /> {item.rating}
-                      </p>
+                      <div
 
-                      <p>{item.exp}</p>
+                        className="tec-card"
 
-                    </div>
+                        key={item._id}
 
-                  </div>
+                      >
 
-                  <div className="tec-right">
+                        <div className="tec-left">
 
-                    <h4>{item.price}</h4>
+                          <img
 
-                    <button>View Details</button>
+                            src="https://i.pravatar.cc/150?img=12"
 
-                  </div>
+                            alt={item.name}
 
-                </div>
+                          />
 
-              ))}
+                          <div>
 
-            </div>
-          </>
+                            <h4>{item.name}</h4>
 
-        )}
+                            <p>
+
+                              <strong>Service :</strong>
+
+                              {" "}
+
+                              {item.service}
+
+                            </p>
+
+                            <p>
+
+                              <strong>Experience :</strong>
+
+                              {" "}
+
+                              {item.experience || "Not Updated"}
+
+                            </p>
+
+                            <p>
+
+                              <strong>City :</strong>
+
+                              {" "}
+
+                              {item.city}
+
+                            </p>
+
+                            <p>
+
+                              <strong>Email :</strong>
+
+                              {" "}
+
+                              {item.email}
+
+                            </p>
+
+                            <p>
+
+                              <strong>Phone :</strong>
+
+                              {" "}
+
+                              {item.phone}
+
+                            </p>
+
+                          </div>
+
+                        </div>
+
+                        <div className="tec-right">
+
+                          <h3>
+
+                            ₹ {item.price}
+
+                          </h3>
+
+                        </div>
+
+                      </div>
+
+                    ))
+
+                  ) : (
+
+                    <h2>
+
+                      No Technician Found
+
+                    </h2>
+
+                  )
+
+                }
+
+              </div>
+
+            </>
+
+          )
+
+        }
 
       </div>
+
     </>
+
   );
+
 }
 
 export default FindTechnician;
