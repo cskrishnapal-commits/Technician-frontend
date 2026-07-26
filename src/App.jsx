@@ -7,7 +7,7 @@ import CustomerLogin from "./pages/CustomerLogin";
 import CustomerRegister from "./pages/CustomerRegister";
 
 import CustomerDashboard from "./pages/CustomerDashboard";
-import CustomerHome from "./pages/CustomerHome";
+import CustomerHome from "./pages/customerHome";   // customer c should be small
 import FindTechnician from "./pages/FindTechnician";
 import CostEstimator from "./pages/CostEstimator";
 import CustomerProfile from "./pages/CustomerProfile";
